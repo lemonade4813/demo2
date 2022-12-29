@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 
+public class ResponseDTO<T> {
 
-public class ResponseDTO {
-
-
-
+    private String error;
+    private List<T> data;
 
 
 }

@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 
 
 public class UserDTO {
-    private String token;
     private String userId;
-    private String username;
     private String password;
     private String id;
 }

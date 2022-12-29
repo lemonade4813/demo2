@@ -23,9 +23,6 @@ public class UserEntity {
     private String id;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String userId;
 
     @Column(nullable = false)
