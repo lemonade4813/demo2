@@ -19,8 +19,8 @@ import java.nio.charset.StandardCharsets;
 public class ApiController {
 
     @CrossOrigin(originPatterns = "http://localhost:3000")
-    @GetMapping("/kakao/{keyword}")
-    public String callApi(@PathVariable String keyword) throws JsonProcessingException {
+    @GetMapping("/kakao")
+    public String callApi(@RequestParam("keyword") String keyword, @RequestParam("page") String page, @RequestParam("size") String size) throws JsonProcessingException {
 
 
         ByteBuffer buffer = StandardCharsets.UTF_8.encode(keyword);
@@ -31,9 +31,13 @@ public class ApiController {
                 .fromUriString("https://dapi.kakao.com/v3/search")
                 .path("/book")
                 .queryParam("query", encode)
+                .queryParam("page", page)
+                .queryParam("size", size)
                 .encode()
                 .build()
                 .toUri();
+
+        System.out.println(uri);
 
 
         RestTemplate restTemplate = new RestTemplate();

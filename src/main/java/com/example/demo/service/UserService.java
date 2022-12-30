@@ -5,6 +5,7 @@ import com.example.demo.model.UserEntity;
 import com.example.demo.persistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 public class UserService {
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Autowired
     private UserRepository userRepository;
 
@@ -29,7 +31,15 @@ public class UserService {
         return userRepository.save(userEntity);
     }
     public UserEntity getByCredentials(final String userId, final String password){
-        return userRepository.findByUserIdAndPassword(userId, password);
+
+        UserEntity originalUser = userRepository.findByUserId(userId);
+
+        //아이디값 선택후 로그인 창에 입력 받은 비밀번호와 기존 등록된 비밀번호와 비교
+
+        if(originalUser != null && encoder.matches(password, originalUser.getPassword())){
+            return originalUser;
+        }
+        return null;
 
     }
 

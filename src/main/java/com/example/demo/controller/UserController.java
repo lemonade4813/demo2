@@ -7,6 +7,7 @@ import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,14 +20,21 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO){
 
         System.out.println(userDTO.getUserId());
         try {
+
+            // 비밀번호 암호화
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String securePassword = encoder.encode(userDTO.getPassword());
+
+
             UserEntity user = UserEntity.builder()
                     .userId(userDTO.getUserId())
-                    .password(userDTO.getPassword())
+                    .password(securePassword)
                     .build();
             UserEntity registeredUser = userService.create(user);
             UserDTO responseDTO = UserDTO.builder()
@@ -63,8 +71,4 @@ public class UserController {
     }
 
     }
-
-
-
-
 }
