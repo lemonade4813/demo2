@@ -25,7 +25,7 @@ public class UserService {
         final String userId = userEntity.getUserId();
         if(userRepository.existsByUserId(userId)){
             log.warn("이미 가입된 회원입니다.",userId);
-            throw new RuntimeException("이미 가입된 아닙니다.");
+            throw new RuntimeException("이미 가입된 회원입니다.");
         }
 
         return userRepository.save(userEntity);
