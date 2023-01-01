@@ -1,5 +1,6 @@
 package com.example.demo.persistence;
 
+import com.example.demo.dto.CountDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BookSearchRepository extends JpaRepository<BookSearchEntity, St
 {
     List<BookSearchEntity> findByUserId(String userId);
 
-    @Query("select keyword, date ,count(keyword) from BookSearchEntity group by keyword order by count(keyword) desc limit 10")
-    List<BookSearchEntity> findByKeywordCountTop10();
+    @Query(nativeQuery = true, value = "select count(b.keyword) as cnt, b.keyword from Book_Search b group by b.keyword order by cnt desc limit 10")
+    List<CountDTO> findByKeywordCountTop10();
 
 }

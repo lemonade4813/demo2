@@ -18,19 +18,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserEntity create(final UserEntity userEntity){
-        if(userEntity == null || userEntity.getUserId()==null){
-            throw new RuntimeException("가입된 회원이 아닙니다.");
-        }
-        final String userId = userEntity.getUserId();
+    public UserEntity create(UserEntity userEntity){
+
+        String userId = userEntity.getUserId();
         if(userRepository.existsByUserId(userId)){
-            log.warn("이미 가입된 회원입니다.",userId);
             throw new RuntimeException("이미 가입된 회원입니다.");
         }
 
         return userRepository.save(userEntity);
     }
-    public UserEntity getByCredentials(final String userId, final String password){
+    public UserEntity getByCredentials(String userId, String password){
 
         UserEntity originalUser = userRepository.findByUserId(userId);
 

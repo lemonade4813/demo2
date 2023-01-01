@@ -39,6 +39,7 @@ public class UserController {
             UserEntity registeredUser = userService.create(user);
             UserDTO responseDTO = UserDTO.builder()
                     .userId(registeredUser.getUserId())
+                    .password(registeredUser.getPassword())
                     .id(registeredUser.getId())
                     .build();
                 return ResponseEntity.ok().body(responseDTO);
@@ -59,7 +60,7 @@ public class UserController {
     if(user != null){
 
         UserDTO responseUserDTO = UserDTO.builder()
-                .userId(user.getUserId()).password(user.getPassword())
+                .userId(user.getUserId())
                 .build();
         System.out.println(ResponseEntity.ok().body(responseUserDTO));
         return ResponseEntity.ok().body(responseUserDTO);

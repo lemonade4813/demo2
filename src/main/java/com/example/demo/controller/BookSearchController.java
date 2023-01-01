@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BookSearchDTO;
+import com.example.demo.dto.CountDTO;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.BookSearchService;
 
@@ -35,7 +36,7 @@ public class BookSearchController {
 
     @CrossOrigin(originPatterns = "http://localhost:3000")
     @GetMapping("/kakao")
-    public String callApi(@RequestParam("keyword") String keyword, @RequestParam("page") String page
+    public String callApi(@RequestParam(value = "keyword", defaultValue = "겨울") String keyword, @RequestParam("page") String page
                           ,@RequestParam("size") String size, @RequestParam("userId") String userId)
              {
 
@@ -80,24 +81,22 @@ public class BookSearchController {
             return e.getMessage();
         }
     }
+
+    @CrossOrigin(originPatterns = "http://localhost:3000")
     @GetMapping("/top10")
     public ResponseEntity<?> retrieveTop10List(){
 
     try {
 
-        List<BookSearchEntity> entities = bookSearchService.retrieveTop10();
+        List<CountDTO> entities = bookSearchService.retrieveTop10();
 
-        List<BookSearchDTO> keywordTop10 = entities.stream().map(BookSearchDTO::new).collect(Collectors.toList());
-
-        ResponseDTO<BookSearchDTO> response = ResponseDTO.<BookSearchDTO>builder().data(keywordTop10).build();
-
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(entities);
 
     }catch(Exception e){
 
         String error = e.getMessage();
 
-        ResponseDTO<BookSearchDTO> response = ResponseDTO.<BookSearchDTO>builder().error(error).build();
+        ResponseDTO<CountDTO> response = ResponseDTO.<CountDTO>builder().error(error).build();
 
         return ResponseEntity.badRequest().body(response);
 
@@ -105,8 +104,8 @@ public class BookSearchController {
 
     }
 
+    @CrossOrigin(originPatterns = "http://localhost:3000")
     @GetMapping("/retrieveMyList")
-
     public ResponseEntity<?> retrieveMyList(@RequestParam String userId){
 
         try {
